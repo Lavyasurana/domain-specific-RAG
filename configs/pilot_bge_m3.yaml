@@ -1,0 +1,14 @@
+run_name: pilot-2023-bge-m3-reranked
+data:
+  passages: data/processed/pilot_2023_anticipatory_bail.jsonl
+  benchmark: data/benchmark/pilot_review_queue.jsonl
+retrieval:
+  mode: bge_m3
+  top_k: 10
+  rerank: bge-reranker-v2-m3
+generation:
+  model: gpt-4o-mini
+judge:
+  model: gpt-4o-mini
+  same_family_warning: true
+results_dir: results/pilot_bge_m3

@@ -1,0 +1,9 @@
+run_name: pilot-2023-anticipatory-bail-hybrid
+data:
+  passages: data/processed/pilot_2023_anticipatory_bail.jsonl
+  benchmark: data/benchmark/pilot_review_queue.jsonl
+retrieval:
+  mode: hybrid
+  top_k: 10
+  rerank: lexical
+results_dir: results/pilot_2023

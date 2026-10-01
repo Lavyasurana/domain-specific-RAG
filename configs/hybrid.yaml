@@ -1,0 +1,9 @@
+run_name: fixture-hybrid-baseline
+data:
+  passages: data/fixtures/passages.jsonl
+  benchmark: data/fixtures/benchmark.jsonl
+retrieval:
+  mode: hybrid
+  top_k: 10
+  rerank: lexical
+results_dir: results/hybrid

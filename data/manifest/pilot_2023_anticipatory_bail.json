@@ -1,0 +1,23 @@
+{
+  "name": "2023 anticipatory-bail / Section 438 pilot corpus",
+  "purpose": "Pilot ingestion and annotation set; not a frozen evaluation benchmark.",
+  "source": {
+    "provider": "Dattam Labs Indian Supreme Court Judgments, AWS Open Data Registry",
+    "dataset_url": "https://registry.opendata.aws/indian-supreme-court-judgments/",
+    "bucket": "s3://indian-supreme-court-judgments",
+    "license": "CC-BY-4.0",
+    "retrieved_on": "2026-10-01",
+    "year": 2023,
+    "language": "English"
+  },
+  "documents": [
+    {"document_id": "2023_10_1184_1195_EN", "citation": "2023INSC660", "title": "MD. ASFAK ALAM versus THE STATE OF JHARKHAND & ANR.", "sha256": "58f74e4090322afa9921681ac76f209bc5ae2e90e6ade398116b8be59836b3aa"},
+    {"document_id": "2023_10_411_426_EN", "citation": "2023INSC612", "title": "PRATIBHA MANCHANDA & ANR versus STATE OF HARYANA & ANR", "sha256": "f47f09a47deeb58461eab117b0b2606c222b52283188da144f9174436c036b8c"},
+    {"document_id": "2023_11_705_714_EN", "citation": "2023INSC784", "title": "STATE OF HARYANA versus DHARAMRAJ", "sha256": "482c6c78190a4ad064cd5b201395f5413ffc35c3127b9bb2fe2475d9860b09b7"},
+    {"document_id": "2023_15_525_589_EN", "citation": "2023INSC1008", "title": "PRIYA INDORIA versus STATE OF KARNATAKA AND ORS. ETC.", "sha256": "4efbfb2fd774dc04a0c770d6e1b63fed14ae8c353730c1d13b46bc197e287cc8"},
+    {"document_id": "2023_1_289_292_EN", "citation": "2023INSC80", "title": "TALAT SANVI versus STATE OF JHARKHAND & ANR.", "sha256": "e0d9de600057e6935b455d9e94bc3f30dc4a83a0459773e93a193d599ffc504f"},
+    {"document_id": "2023_2_1112_1134_EN", "citation": "2023INSC252", "title": "MS. X versus THE STATE OF MAHARASHTRA AND ANOTHER", "sha256": "458b0b87cc331ab3a01fec51dc95d5251955b5351ffda67080edf27aa9dd3f0f"},
+    {"document_id": "2023_3_79_90_EN", "citation": "2023INSC163", "title": "THE DIRECTORATE OF ENFORCEMENT versus M. GOPAL REDDY & ANR", "sha256": "d69edff5758be954fdc0c27bc5f12e5f643413af2c4b21a7cf8db2906fb404ff"},
+    {"document_id": "2023_9_1165_1181_EN", "citation": "2023INSC596", "title": "RAMESH KUMAR versus STATE OF NCT OF DELHI", "sha256": "1e29dca51fbfcd69a1155d9a7dc977809f1e6e2ae1088589d5ef9a08d821c2cb"}
+  ]
+}

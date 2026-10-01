@@ -1,0 +1,8 @@
+run_name: fixture-bm25-baseline
+data:
+  passages: data/fixtures/passages.jsonl
+  benchmark: data/fixtures/benchmark.jsonl
+retrieval:
+  mode: bm25
+  top_k: 10
+results_dir: results/baseline

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "legal-rag-eval"
+version = "0.1.0"
+description = "Reproducible evaluation harness for legal RAG retrieval."
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+api = ["fastapi>=0.115", "uvicorn>=0.30"]
+demo = ["streamlit>=1.38"]
+pdf = ["PyMuPDF>=1.24"]
+dense = ["sentence-transformers>=3.0"]
+openai = ["openai>=1.0"]
+
+[project.scripts]
+legal-rag-eval = "legal_rag.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/legal_rag"]
