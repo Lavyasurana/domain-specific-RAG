@@ -7,6 +7,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-      - run: pip install -e '.[dev]'
+      - run: pip install -e '.[dev,openai]'
       - run: pytest -q
       - run: legal-rag-eval evaluate --config configs/baseline.yaml

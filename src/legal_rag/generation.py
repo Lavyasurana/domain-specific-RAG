@@ -18,12 +18,10 @@ class GeneratedAnswer:
     reason: str
 
 
-class ResponsesClient(Protocol):
-    """The small portion of the OpenAI Responses client used by this module."""
+class ChatModel(Protocol):
+    """The LangChain chat-model contract used by the generation pipeline."""
 
-    class responses:  # type: ignore[valid-type]
-        @staticmethod
-        def create(**kwargs): ...
+    def invoke(self, input, **kwargs): ...
 
 
 def generate_grounded_answer(question: str, context: list[RankedPassage], minimum_overlap: int = 1) -> GeneratedAnswer:
@@ -41,30 +39,31 @@ def generate_grounded_answer(question: str, context: list[RankedPassage], minimu
     return GeneratedAnswer(" ".join(f"{sentence} [{chunk_id}]" for sentence, chunk_id in selected), tuple(chunk_id for _, chunk_id in selected), False, "grounded_extractive")
 
 
-def generate_openai_answer(question: str, context: list[RankedPassage], client: ResponsesClient | None = None, model: str = "gpt-4o-mini") -> GeneratedAnswer:
-    """Generate from retrieved evidence only, validating every returned citation ID."""
+def generate_openai_answer(question: str, context: list[RankedPassage], llm: ChatModel | None = None, model: str = "gpt-4o-mini") -> GeneratedAnswer:
+    """Generate with a LangChain chat model and validate every returned citation ID."""
     if not context:
         return GeneratedAnswer("I could not find support for that in this corpus.", (), True, "empty_context")
-    if client is None:
+    try:
+        from langchain_core.output_parsers import StrOutputParser
+        from langchain_core.prompts import ChatPromptTemplate
+    except ImportError as error:
+        raise RuntimeError("OpenAI generation requires `pip install -e '.[openai]'`") from error
+    if llm is None:
         try:
-            from openai import OpenAI
+            from langchain_openai import ChatOpenAI
         except ImportError as error:
             raise RuntimeError("OpenAI generation requires `pip install -e '.[openai]'`") from error
-        client = OpenAI()
+        llm = ChatOpenAI(model=model, temperature=0, max_tokens=700)
     evidence = "\n\n".join(f"[{item.passage.chunk_id}]\n{item.passage.text}" for item in context)
-    instructions = """You are a legal-research assistant. Answer only from the supplied evidence.
+    prompt = ChatPromptTemplate.from_messages([("system", """You are a legal-research assistant. Answer only from the supplied evidence.
 Do not provide legal advice or claim a judgment is current or controlling law.
 Every material factual or legal claim must end with one or more exact evidence IDs in square brackets.
 If the evidence does not support an answer, reply exactly: I could not find support for that in this corpus.
-Do not cite an ID that is not in the evidence."""
-    response = client.responses.create(
-        model=model,
-        instructions=instructions,
-        input=f"Question: {question}\n\nEvidence:\n{evidence}",
-        temperature=0,
-        max_output_tokens=700,
-    )
-    text = response.output_text.strip()
+Do not cite an ID that is not in the evidence."""), ("human", "Question: {question}\n\nEvidence:\n{evidence}")])
+    # Prompt construction, model invocation, and message parsing are all LangChain
+    # components; retrieval remains separately auditable for benchmark evaluation.
+    response = llm.invoke(prompt.invoke({"question": question, "evidence": evidence}))
+    text = StrOutputParser().invoke(response).strip()
     valid_ids = {item.passage.chunk_id for item in context}
     cited_ids = tuple(dict.fromkeys(re.findall(r"\[([^\]]+)\]", text)))
     valid_citations = tuple(citation for citation in cited_ids if citation in valid_ids)
@@ -73,4 +72,4 @@ Do not cite an ID that is not in the evidence."""
         return GeneratedAnswer(text, (), True, "model_insufficient_evidence")
     if not valid_citations or len(valid_citations) != len(cited_ids):
         return GeneratedAnswer("I could not find support for that in this corpus.", (), True, "invalid_or_missing_citations")
-    return GeneratedAnswer(text, valid_citations, False, f"openai:{model}")
+    return GeneratedAnswer(text, valid_citations, False, f"langchain-openai:{model}")

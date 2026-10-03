@@ -15,7 +15,7 @@ api = ["fastapi>=0.115", "uvicorn>=0.30"]
 demo = ["streamlit>=1.38"]
 pdf = ["PyMuPDF>=1.24"]
 dense = ["sentence-transformers>=3.0"]
-openai = ["openai>=1.0"]
+openai = ["langchain-core>=0.3", "langchain-openai>=0.2"]
 
 [project.scripts]
 legal-rag-eval = "legal_rag.cli:main"

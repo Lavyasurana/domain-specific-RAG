@@ -1,6 +1,6 @@
 # Evaluated Legal RAG
 
-A framework-light retrieval-augmented generation research project over Indian
+A LangChain-based retrieval-augmented generation research project over Indian
 Supreme Court judgments. It measures retrieval separately from answer quality,
 validates an LLM judge against human labels, and treats abstention as a
 first-class behavior.
@@ -17,7 +17,7 @@ production corpus and frozen benchmark are intentionally not included.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e '.[dev]'
+pip install -e '.[dev,openai]'
 legal-rag-eval evaluate --config configs/baseline.yaml
 pytest
 ```
@@ -47,7 +47,7 @@ export OPENAI_API_KEY="your_api_key_here"
 LEGAL_RAG_PASSAGES=data/processed/passages.jsonl streamlit run app/streamlit_app.py
 ```
 
-The application uses OpenAI's `gpt-4o-mini` through the Responses API for
+The application uses LangChain's `ChatOpenAI` integration with `gpt-4o-mini` for
 generation. Every material claim must cite a retrieved chunk; outputs with
 missing or invented citation IDs are rejected into an abstention response.
 
